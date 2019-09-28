@@ -1,0 +1,337 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="Aleš Trunda alestrunda.eu">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="favicon.png">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css" type="text/css">
+    <link rel="stylesheet" href="styles/github.css" type="text/css">
+
+    <title>Pexeso Documentation</title>
+</head>
+
+<body>
+	<h1>Pexeso Documentation</h1>
+    
+    <h4><a href="http://pexeso.alestrunda.cz">Live game</a></h4>
+    
+    <section>
+    	<div class="container">
+            <header>
+            	<h1>Pexeso game</h1>
+           	</header>
+            <div class="content">
+                <article>
+                    <p><strong>About</strong>: before game starts, game pieces are picked and shuffled. Game pieces are pairs of same pieces (every piece has its completely identical twin). Game starts with all pieces turned off, so players do not know which pieces are identical. Game goal is to find these identical pairs. Player on turn can turn on two pieces, if these pieces are the identical twins, he gets one point and continue (this can be set), these twin pieces get out of the game. If the selected two pieces are not the twins, they are turned off again and next player gets on turn. Game finishes when all the pairs were found, player with most of the points wins. When piece is turned off/on it stays on its position, no one moves it. When piece it turned on all players can see what piece was turned.</p>
+                    <p><strong>Players</strong>: min 1, max not limited</p>
+                    <p><strong>Version</strong>: 1.1, 9.8.2014</p>
+                    <p><strong>Author</strong>: <a href="http://codecanyon.net/user/ivanbohatyr">Aleš Trunda</a></p>
+                </article>
+            </div>
+            
+            <hr>
+            
+            <div class="content">
+                <article>
+                	<h1>Requirements:</h1>
+                    <ul>
+                    	<li>jQuery</li>
+                    </ul>
+                </article>
+            </div>
+            
+            <hr>
+            
+            <div class="content">
+                <article>
+                	<h1>Stylesheets:</h1>
+                    <ul>
+                    	<li>pexeso.css</li>
+                    </ul>
+                    <p>Most of custom changes should be made in this file.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+    
+    <section>
+    	<div class="container">
+            <header>
+                <h1>Settings</h1>
+            </header>
+            
+            <div class="content">
+            	<article>
+                    <h3>pieces</h3>
+                    <p>Number of unique pieces - game will have pieces*2 squares</p>
+                    <pre data-language="javascript"><code>options: integer
+default: 10</code></pre>
+    			</article>
+    
+    			<article>
+                    <h3>players</h3>
+                    <p>Number of players</p>
+                    <pre data-language="javascript"><code>options: integer
+default: 1</code></pre>
+    			</article>
+    
+    			<article>
+                    <h3>startPlayer</h3>
+                    <p>Number of starting player - first player has number 1 (not 0)!</p>
+                    <pre data-language="javascript"><code>options: integer
+default: 1</code></pre>
+                </article>
+    
+    			<article>
+                    <h3>pictures</h3>
+                    <p>Array of picture sources<br>
+                    For this you can use function from file get_images.php - like this: "pictures = &lt;?php echo get_images_for_pexeso('images/pexeso/browsers'); ?&gt;;" - creates array from all files (make sure you have there only images) in selected folder.</p>
+                    <pre data-language="javascript"><code>options: array of strings
+default: []</code></pre>
+    			</article>
+    
+    			<article>
+                    <h3>switchOnPoint</h3>
+                    <p><strong>True</strong> for switching player always after 1 step, <strong>false</strong> for switching player only if his step was wrong (if his step was correct he will continue).</p>
+                    <pre data-language="javascript"><code>options: boolean (true/false)
+default: false</code></pre>
+                </article>
+    
+    			<article>
+                    <h3>waitForLoad</h3>
+                    <p>True - game will start after all pictures are loaded (I recommend to add some loader, that will cover the game area and check onGameLoaded callback).<br>
+                    False - game starts immediately - you risk problems when player turns empty (not loaded) picture.</p>
+                    <pre data-language="javascript"><code>options: boolean (true/false)
+default: true</code></pre>
+                </article>
+                
+                <article>
+                    <h3>waitTime</h3>
+                    <p>Time to wait before the quares are turned off. In milliseconds. This is important when css transitions are not used, because there will be no delay and the square will be turned off immediately, so the player will not notice what picture was there.</p>
+                    <pre data-language="javascript"><code>options: integer
+default: 1500</code></pre>
+                </article>
+                
+                <article>
+                    <h3>squareDone</h3>
+                    <p>When standard game is played the pictures that are solved stay in the game area, they are just covered so the players know they are solved (this is when the default 'cover' option is used). But when we want to play game where we reveal big background-picture in the back, then the pictures cannot be just covered, they have to disappear, that means different animation than 'cover' must be used, I call it 'square' animation. So 'cover' option for animating cover over the square, 'square' option for animating directly the square.</p>
+                    <p>In case no animations used (turned off or not supported) this setting has no effect.</p>
+                    <pre data-language="javascript"><code>options: string ("cover" | "square")
+default: "cover"</code></pre>
+                </article>
+                
+                <article>
+                    <h3>useCss</h3>
+                    <p>If used web browser do not support 3D transforms, no transforms or animations will be used. If 3D transforms are supported they are used, but they can be turned off by setting this option to false.</p>
+                    <pre data-language="javascript"><code>options: boolean (true/false)
+default: true</code></pre>
+                </article>
+            </div>
+        </div>
+    </section>
+    
+    <section>
+    	<div class="container">
+            <header>
+                <h1>Callbacks</h1>
+            </header>
+            
+            <article>
+                <h3>onPlayerChange</h3>
+				<p>Fired when player on turn changes.<br>
+				<pre data-language="javascript"><code>default: function(){}
+options: function(playerOnTurn, playerPoints) { /*your code*/ }
+arguments:
+	playerOnTurn: number of player that gets on turn
+	playerPoints: number of points of that player</code></pre>
+    		</article>
+
+			<article>
+                <h3>onGameInit</h3>
+                <p>Fired when game is created.</p>
+                <pre data-language="javascript"><code>default: function(){}
+options: function(startPlayer) { /*your code*/ }
+arguments:
+	startPlayer: number of player that starts the game</code></pre>
+			</article>
+
+			<article>
+                <h3>onGameLoaded</h3>
+                <p>Fired when game (all the images) is loaded - invoked only when setting waitForLoad is true.</p>
+				<pre data-language="javascript"><code>default: function(){}
+options: function() { /*your code*/ }</code></pre>
+            </article>
+
+			<article>
+                <h3>onStep</h3>
+                <p>Fired when player turned two pieces.</p>
+                <pre data-language="javascript"><code>default: function(){}
+options: function(correctStep, totalSteps, playerPoints) { /*your code*/ }
+arguments:
+	correctStep: boolean value that indicates if the step was correct
+	totalSteps: number of steps in the game
+	playerPoints: number of points of active player</code></pre>
+			</article>
+
+			<article>
+                <h3>onSolved</h3>
+                <p>Fired when game is finished.</p>
+                <pre data-language="javascript"><code>default: function(){}
+options: function(points) { /*your code*/ }
+arguments:
+	points: array of points of all players, note that the first player is on index 1 (not 0)</code></pre>
+            </article>
+
+			<article>
+                <h3>onTimerChange</h3>
+                <p>Fired when timer value changes - every second, smaller value is not considered.</p>
+                <pre data-language="javascript"><code>default: function(){}
+options: function(timerValue) { /*your code*/ }
+arguments:
+	timerValue: game timer value</code></pre>
+			</article>
+
+			<article>
+                <h3>onImgLoaded</h3>
+                <p>Fired when image is loaded - only when setting waitForLoad is true</p>
+               	<pre data-language="javascript"><code>default: function(){}
+options: function(numberOfImages) { /*your code*/ }
+arguments:
+	numberOfImages: number of loaded images - for progress bar</code></pre>
+			</article>
+            
+            <article>
+                <h3>onStatusChange</h3>
+                <p>Fired when game status is changed. Game uses 4 statuses: "running" (timer is running, player interface is active - pieces can be clicked), "processing" (game is processing player action - waiting for functions and animations to finish, timer running, player interface inactive - pieces cannot be clicked), "paused" (game paused, timer not running, player interface inactive) and "finished" (game solved, timer stopped, player interface inactive)</p>
+               	<pre data-language="javascript"><code>default: function(){}
+options: function(status) { /*your code*/ }
+arguments:
+	status: new game status</code></pre>
+			</article>
+        </div>
+    </section>
+    
+    <section>
+    	<div class="container">
+            <header>
+                <h1>Methods</h1>
+            </header>
+            
+            <article>
+            	<h3>destroy</h3>
+            	<p>Removes game timer and all game structure.</p>
+                <pre data-language="javascript"><code>example:
+pexeso = $('#pexeso-game').pexeso();
+pexeso.destroy();</code></pre>
+           	</article>
+            
+            <article>
+            	<h3>pause</h3>
+            	<p>Pauses the game - timer stopped, player interface inactive. Game can be paused only when game status is "running", in other cases game cannot be paused (testing return value of this function will determine if game was/wasn't paused). It was made this way because pausing followed by resuming the game while it's still processing player action made game unstable.<br>
+                Viz "resume" to reactivate the game.</p>
+                <pre data-language="javascript"><code>example:
+pexeso = $('#pexeso-game').pexeso();
+if(pexeso.pause() === false)
+	//game was not paused - it's still processing player action or it's already paused
+else
+	//game paused</code></pre>
+           	</article>
+            
+            <article>
+            	<h3>resume</h3>
+            	<p>Resumes the game - timer and player interface reactivated. Game can be resumed only when game status is "paused", in other cases game cannot be resumed (testing return value of this function will determine if game was/wasn't resumed).<br>
+                Viz "pause" to pause the game.</p>
+                <pre data-language="javascript"><code>example:
+pexeso = $('#pexeso-game').pexeso();
+pexeso.resume();</code></pre>
+           	</article>
+            
+            <article>
+                <h3>getPoints</h3>
+                <p>Returns points of all players as an array, note that the first player is on index 1 (not 0).</p>
+                <pre data-language="javascript"><code>example:
+pexeso = $('#pexeso-game').pexeso();
+var points = pexeso.getPoints();
+var points_player1 = points[1];</code></pre>
+            </article>
+            
+            <article>
+                <h3>getTotalPoints</h3>
+                <p>Returns number of total points of all players.</p>
+                <pre data-language="javascript"><code>example:
+pexeso = $('#pexeso-game').pexeso();
+var points = pexeso.getTotalPoints();</code></pre>
+            </article>
+            
+            <article>
+                <h3>getTimerValue</h3>
+                <p>Returns actual timer value.</p>
+                <pre data-language="javascript"><code>example:
+pexeso = $('#pexeso-game').pexeso();
+var sec = pexeso.getTimerValue();</code></pre>
+			</article>
+            
+            <article>
+                <h3>getSteps</h3>
+                <p>Returns steps of all players as an array, note that the first player is on index 1 (not 0).</p>
+                <pre data-language="javascript"><code>example:
+pexeso = $('#pexeso-game').pexeso();
+var steps = pexeso.getSteps();
+var steps_player1 = steps[1];</code></pre>
+			</article>
+
+			<article>
+                <h3>getTotalSteps</h3>
+                <p>Returns count of steps in the game (steps of all players).</p>
+                <pre data-language="javascript"><code>example:
+pexeso = $('#pexeso-game').pexeso();
+var steps = pexeso.getTotalSteps();</code></pre>
+			</article>
+            
+            <article>
+                <h3>getCurrentPlayer</h3>
+                <p>returns number of current player, note that the first player has number 1 (not 0)</p>
+                <pre data-language="javascript"><code>example:
+pexeso = $('#pexeso-game').pexeso();
+var player_on_turn = pexeso.getCurrentPlayer();</code></pre>
+        	</article>
+        </div>
+    </section>
+    
+    <section>
+    	<div class="container">
+            <header>
+                <h1>Example</h1>
+            </header>
+            <pre data-language="javascript"><code>//run pexeso
+$('#pexeso').pexeso({
+   pieces:			5,
+   players:			2,
+   pictures:			['images/1.jpg','images/2.jpg','images/3.jpg','images/4.jpg','images/5.jpg'],
+   onSolved:			function(points) {
+      //print results
+      var out = "Solved!\n\n";
+      for(var i=1;i<=players;i++) {
+         out += 'Player '+i+': '+points[i]+' points\n';
+      }
+      alert(out);
+   },
+   onPlayerChange:		function(player_number) {
+      //print actual player and pictures to go
+      $('#player-on-turn').html(player_number);
+      
+      //pictures left = number of pieces minus total points of all players
+      var points = $('#pexeso').pexeso.getTotalPoints();
+      $('#pictures-left').html(5-points);
+   },
+});</code></pre>
+        </div>
+        
+    </section>
+    <script src="js/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <script src="js/rainbow-custom.min.js" type="text/javascript"></script>
+</body>
+</html>

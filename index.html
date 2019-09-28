@@ -1,0 +1,222 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="Aleš Trunda alestrunda.eu">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="favicon.png">
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="dist/pexeso.min.css" type="text/css">
+    <link rel="stylesheet" href="styles/main.css" type="text/css">
+    
+    <title>Pexeso Game</title>
+</head>
+
+<body>
+    <h1>Pexeso Game <span class="text-small">(alias Concentration, Memory, Pelmanism or simply Pairs)</span></h1>
+    
+    <p><a href="docs.html">Documentation</a></p>
+    
+	<hr>
+
+	<section>
+    	<h1>Game settings</h1>
+        <table class="data" cellspacing="0">
+            <tbody>
+                <tr>
+                    <td>Picture type:</td>
+                    <td>
+                        <select id="image-class">
+                            <option value="browsers" data-max="73" data-min="2">Web browsers (73 pictures)</option>
+                            <option value="file-types" data-max="62" data-min="2">File types (62 pictures)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Number of pictures:</td>
+                    <td>
+                        <input id="pieces-range" type="range" min="5" max="100" step="1" value="15">
+                        <span class="help" title="If you see the slider (on the left), then move it and select the value, if not (your browser does not support that yet) type the value in the left field - min 2, max depends on pictures type."><span title=" ">?</span></span>
+                        <input id="pieces-value" type="text" size="2">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Number of players:</td>
+                    <td>
+                        <input id="players-range" type="range" min="1" max="6" step="1" value="2">
+                        <span class="help" title="If you see the slider (on the left), then move it and select the value, if not (your browser does not support that yet) type the value in the left field - min 1, max 6."><span title=" ">?</span></span>
+                        <input id="players-value" type="text" size="2">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="center">
+                        <button class="button" id="btn-go">Play</button>
+                        <button class="button" id="btn-pause">Pause</button>
+                        <button class="button" id="btn-resume">Resume</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+	<hr>
+    
+    <section>
+    	<h1>Game area</h1>
+        <p id="loader"></p>
+        <div id="game-pexeso"></div>
+    </section>
+    
+    <hr>
+    
+    <section>
+    	<h1>Game info</h1>
+        <table class="data" cellspacing="0">
+            <tbody>
+                <tr>
+                    <td>On turn:</td>
+                    <td><span id="player">-</span></td>
+                </tr>
+                <tr>
+                    <td>Elapsed time:</td>
+                    <td><span id="time">0</span>s</td>
+                </tr>
+                <tr>
+                    <td>Steps:</td>
+                    <td><span id="steps">0</span></td>
+                </tr>
+                <tr>
+                    <td>Player on turn points:</td>
+                    <td><span id="player-points">0</span> points</td>
+                </tr>
+                <tr>
+                    <td>Total points:</td>
+                    <td><span id="points">0</span> points</td>
+                </tr>
+                <tr>
+                    <td>Status:</td>
+                    <td id="status"></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+        
+    <hr>
+    
+    <p class="footnote">All web browser logos and trademarks are the property of their respective owners! If you represent the entity that has the rights over a logo and you want, for whatever reason, that logo removed from this site, please contact me, I will remove it as soon as possible.<br>
+    2014 alestrunda.eu</p>
+
+    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="dist/pexeso.min.js"></script>
+    <script type="text/javascript" src="js/custom.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+        var gamePexeso;
+        var $gamePexeso = $('#game-pexeso');
+        
+        //generate the pexeso
+        $('#btn-go').click(function(e) {
+			//remove pause cover if previous game was paused and not finished
+			$gamePexeso.removeClass('paused');
+			
+			//ready loader
+			$gamePexeso.removeClass('loaded');
+			
+			//reset old values
+			$('#player').html('-');
+			$('#time').html('0');
+			$('#steps').html('0');
+			$('#player-points').html('0');
+			$('#points').html('0');
+			
+            var pieces = parseInt($('#pieces-range').val());
+            var players = parseInt($('#players-range').val());
+			
+			//check if settings do not "overflow"
+			if(players > parseInt($('#players-range').data('max')))
+				players = parseInt($('#players-range').data('max'));
+			if(players < parseInt($('#players-range').data('min')))
+				players = parseInt($('#players-range').data('min'));
+			if(pieces > parseInt($('#pieces-range').data('max')))
+				pieces = parseInt($('#pieces-range').data('max'));
+			if(pieces < parseInt($('#pieces-range').data('min')))
+				pieces = parseInt($('#pieces-range').data('min'));
+			
+            var pics_class = $('#image-class').val();
+			var pictures;
+            switch(pics_class) {
+                case 'browsers':
+                    pictures = ['images/pexeso/browsers/1.png','images/pexeso/browsers/10.png','images/pexeso/browsers/11.png','images/pexeso/browsers/12.png','images/pexeso/browsers/13.png','images/pexeso/browsers/14.png','images/pexeso/browsers/15.png','images/pexeso/browsers/16.png','images/pexeso/browsers/17.png','images/pexeso/browsers/18.png','images/pexeso/browsers/19.png','images/pexeso/browsers/2.png','images/pexeso/browsers/20.png','images/pexeso/browsers/21.png','images/pexeso/browsers/22.png','images/pexeso/browsers/23.png','images/pexeso/browsers/24.png','images/pexeso/browsers/25.png','images/pexeso/browsers/26.png','images/pexeso/browsers/27.png','images/pexeso/browsers/28.png','images/pexeso/browsers/29.png','images/pexeso/browsers/3.png','images/pexeso/browsers/30.png','images/pexeso/browsers/31.png','images/pexeso/browsers/32.png','images/pexeso/browsers/33.png','images/pexeso/browsers/34.png','images/pexeso/browsers/35.png','images/pexeso/browsers/36.png','images/pexeso/browsers/37.png','images/pexeso/browsers/38.png','images/pexeso/browsers/39.png','images/pexeso/browsers/4.png','images/pexeso/browsers/40.png','images/pexeso/browsers/41.png','images/pexeso/browsers/42.png','images/pexeso/browsers/43.png','images/pexeso/browsers/44.png','images/pexeso/browsers/45.png','images/pexeso/browsers/46.png','images/pexeso/browsers/47.png','images/pexeso/browsers/48.png','images/pexeso/browsers/49.png','images/pexeso/browsers/5.png','images/pexeso/browsers/50.png','images/pexeso/browsers/51.png','images/pexeso/browsers/52.png','images/pexeso/browsers/53.png','images/pexeso/browsers/54.png','images/pexeso/browsers/55.png','images/pexeso/browsers/56.png','images/pexeso/browsers/57.png','images/pexeso/browsers/58.png','images/pexeso/browsers/59.png','images/pexeso/browsers/6.png','images/pexeso/browsers/60.png','images/pexeso/browsers/61.png','images/pexeso/browsers/62.png','images/pexeso/browsers/63.png','images/pexeso/browsers/64.png','images/pexeso/browsers/65.png','images/pexeso/browsers/66.png','images/pexeso/browsers/67.png','images/pexeso/browsers/68.png','images/pexeso/browsers/69.png','images/pexeso/browsers/7.png','images/pexeso/browsers/70.png','images/pexeso/browsers/71.png','images/pexeso/browsers/72.png','images/pexeso/browsers/73.png','images/pexeso/browsers/8.png','images/pexeso/browsers/9.png'];
+                    break;
+                case 'file-types':
+                    pictures = ['images/pexeso/file_types/1.png','images/pexeso/file_types/10.png','images/pexeso/file_types/11.png','images/pexeso/file_types/12.png','images/pexeso/file_types/13.png','images/pexeso/file_types/14.png','images/pexeso/file_types/15.png','images/pexeso/file_types/16.png','images/pexeso/file_types/17.png','images/pexeso/file_types/18.png','images/pexeso/file_types/19.png','images/pexeso/file_types/2.png','images/pexeso/file_types/20.png','images/pexeso/file_types/21.png','images/pexeso/file_types/22.png','images/pexeso/file_types/23.png','images/pexeso/file_types/24.png','images/pexeso/file_types/25.png','images/pexeso/file_types/26.png','images/pexeso/file_types/27.png','images/pexeso/file_types/28.png','images/pexeso/file_types/29.png','images/pexeso/file_types/3.png','images/pexeso/file_types/30.png','images/pexeso/file_types/31.png','images/pexeso/file_types/32.png','images/pexeso/file_types/33.png','images/pexeso/file_types/34.png','images/pexeso/file_types/35.png','images/pexeso/file_types/36.png','images/pexeso/file_types/37.png','images/pexeso/file_types/38.png','images/pexeso/file_types/39.png','images/pexeso/file_types/4.png','images/pexeso/file_types/40.png','images/pexeso/file_types/41.png','images/pexeso/file_types/42.png','images/pexeso/file_types/43.png','images/pexeso/file_types/44.png','images/pexeso/file_types/45.png','images/pexeso/file_types/46.png','images/pexeso/file_types/47.png','images/pexeso/file_types/48.png','images/pexeso/file_types/49.png','images/pexeso/file_types/5.png','images/pexeso/file_types/50.png','images/pexeso/file_types/51.png','images/pexeso/file_types/52.png','images/pexeso/file_types/53.png','images/pexeso/file_types/54.png','images/pexeso/file_types/55.png','images/pexeso/file_types/56.png','images/pexeso/file_types/57.png','images/pexeso/file_types/58.png','images/pexeso/file_types/59.png','images/pexeso/file_types/6.png','images/pexeso/file_types/60.png','images/pexeso/file_types/61.png','images/pexeso/file_types/62.png','images/pexeso/file_types/7.png','images/pexeso/file_types/8.png','images/pexeso/file_types/9.png'];
+                    break;
+                default:
+                    pictures = []
+            }
+			
+			//remove previous game
+			if(gamePexeso) {
+				gamePexeso.destroy();
+				gamePexeso = null;
+			}
+            
+			//start new game
+            gamePexeso = $gamePexeso.pexeso({
+                pieces: pieces,
+                players: players,
+                pictures: pictures,
+                onSolved: function(points) {
+					$('#player').html("Solved");
+                    var out = "Solved!\n\n";
+                    for(var i=1; i<=players; i++) {
+                        out += 'Player ' + i + ': ' + points[i] + ' points\n';
+                    }
+                    alert(out);
+                },
+                onGameInit: function(player_on_turn) {
+                    $('#player').html(player_on_turn);
+                },
+				onGameLoaded: function() {
+                    $gamePexeso.addClass('loaded');
+                },
+				onStep: function(correct_step, total_steps, player_points) {
+                    $('#steps').html(total_steps);
+					$('#player-points').html(player_points);
+                	$('#points').html(gamePexeso.getTotalPoints());
+                },
+                onPlayerChange: function(player_number, player_points) {
+                    $('#player').html(player_number);
+					$('#player-points').html(player_points);
+				},
+				onTimerChange: function(elapsed_time) {
+					$('#time').html(elapsed_time);
+                },
+				onImgLoaded: function(loaded_images) {
+					$('#loader').html('Loading ' + Math.floor(loaded_images / pieces * 100) + '%');
+				},
+				onStatusChange: function(status) {
+					$('#status').html(status);
+				},
+			});
+        });
+		
+		$('#btn-pause').click(function(e) {
+			if(gamePexeso) {
+				if(gamePexeso.pause())
+					$gamePexeso.addClass('paused');
+			}
+        });
+		
+		$('#btn-resume').click(function(e) {
+			if(gamePexeso) {
+				$gamePexeso.removeClass('paused');
+				gamePexeso.resume();
+			}
+        });
+	});
+    </script>
+
+</body>
+</html>

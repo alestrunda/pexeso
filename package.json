@@ -1,0 +1,30 @@
+{
+  "name": "pexeso",
+  "version": "1.1.0",
+  "description": "Pexeso (concentration) game, single player and multiplayer",
+  "keywords": [
+    "pexeso",
+    "game"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alestrunda/pexeso"
+  },
+  "author": "Aleš Trunda",
+  "devDependencies": {
+    "autoprefixer": "^9.6.1",
+    "cssnano": "^4.1.10",
+    "gulp": "^4.0.2",
+    "gulp-postcss": "^8.0.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-uglify": "^3.0.2"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}

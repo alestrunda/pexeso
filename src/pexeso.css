@@ -1,0 +1,211 @@
+@charset "utf-8";
+
+.pexeso-container {
+	overflow: hidden;
+}
+
+.pexeso-container * {
+			box-sizing: border-box;
+}
+
+.pexeso-container.css-not-supported.pexeso-done-cover .pexeso-square.square-done .square-cover {
+	opacity: 0.5;
+}
+
+.pexeso-container.css-not-supported.pexeso-done-square .pexeso-square-container-done {
+	visibility: hidden;
+}
+
+.pexeso-container.css-not-supported .pexeso-square .pexeso-edge {
+	display: none;
+}
+
+.pexeso-container.css-not-supported .pexeso-square .pexeso-image {
+	display: none;
+}
+
+.pexeso-container.css-not-supported .pexeso-square.square-active .pexeso-image,
+.pexeso-container.css-not-supported .pexeso-square.square-done .pexeso-image {
+	display: block;
+}
+
+.pexeso-container.css-not-supported .pexeso-square.square-active .pexeso-empty,
+.pexeso-container.css-not-supported .pexeso-square.square-done .pexeso-empty {
+	display: none;
+}
+
+.pexeso-container.css-not-supported .pexeso-square.square-wrong .square-cover {
+	opacity: 0.5;
+}
+
+.pexeso-container.css-supported.pexeso-done-cover .pexeso-square.square-done .square-cover,
+.pexeso-container.css-supported .pexeso-square-container {
+			animation-duration: 1s;
+			animation-fill-mode: forwards;
+}
+
+.pexeso-container.css-supported.pexeso-done-cover .pexeso-square.square-done .square-cover {
+			animation-name: fadeIn;
+}
+
+.pexeso-container.css-supported.pexeso-done-square .pexeso-square-container-done {
+			animation-name: fadeOut;
+}
+
+.pexeso-container.css-supported .pexeso-square {
+			animation-duration: 1s;
+			animation-fill-mode: forwards;
+			transition: all 1s ease-out;
+			transform-style: preserve-3d;
+}
+
+.pexeso-container.css-supported .pexeso-square .pexeso-content {
+			transition: all 1s ease-out;
+}
+
+.pexeso-container.css-supported .pexeso-square .pexeso-edge {
+			transform: rotateY(-90deg) translateZ(1px);
+}
+
+.pexeso-container.css-supported .pexeso-square .pexeso-image {
+			transform: rotateY(180deg) translateZ(1px);
+}
+
+.pexeso-container.css-supported .pexeso-square .pexeso-empty {
+			transform: translateZ(1px);
+}
+
+.pexeso-container.css-supported .pexeso-square.square-active,
+.pexeso-container.css-supported .pexeso-square.square-done {
+			transform: rotateY(180deg);
+}
+
+.pexeso-container.css-supported .pexeso-square .square-cover {
+			animation-duration: 1.4s;
+}
+
+.pexeso-container.css-supported .pexeso-square.square-wrong .square-cover {
+			animation-name: pulse;
+}
+
+.pexeso-done-cover .pexeso-square.square-done .pexeso-image .pexeso-content {
+			box-shadow: -5px 5px 2px rgba(0,0,0,0), 0 0 1px 1px rgba(0,0,0,0.5);
+}
+
+.pexeso-done-cover .pexeso-square.square-done .square-cover {
+	background-color: rgba(255,255,255,0.5);
+}
+
+.pexeso-done-cover .pexeso-square-container {
+	margin: 15px;
+}
+
+.pexeso-done-square .pexeso-square .pexeso-empty .pexeso-content,
+.pexeso-done-square .pexeso-square .pexeso-image .pexeso-content {
+			box-shadow: 0 0 1px 1px rgba(0,0,0,0.9);
+}
+
+.pexeso-done-square .pexeso-square-container {
+	background-color: #FAFAFA;
+	margin: 1px;
+}
+
+.pexeso-square {
+	height: 100%;
+	width: 100%;
+	position: relative;
+}
+
+.pexeso-square.square-open {
+	cursor: pointer;
+}
+
+.pexeso-square.square-wrong .square-cover {
+	background-color: rgba(255,204,204,0.6);
+}
+
+.pexeso-square .pexeso-content {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+.pexeso-square .pexeso-edge,
+.pexeso-square .pexeso-empty,
+.pexeso-square .pexeso-image {
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 100%;
+}
+
+.pexeso-square .pexeso-edge,
+.pexeso-square .pexeso-empty .pexeso-content {
+			box-shadow: 5px 5px 2px rgba(0,0,0,0.35), 0 0 1px 1px rgba(0,0,0,0.9);
+}
+
+.pexeso-square.square-active .pexeso-edge,
+.pexeso-square.square-active .pexeso-empty .pexeso-content {
+			box-shadow: -5px 5px 2px rgba(0,0,0,0.35), 0 0 1px 1px rgba(0,0,0,0.9);
+}
+
+.pexeso-square .pexeso-edge {
+	width: 2px;
+	background-color: #444;
+}
+
+.pexeso-square .pexeso-empty .pexeso-content {
+	background-image: url('../images/void.png');
+	background-color: #FAFAFA;
+			background-size: 100%;
+}
+
+.pexeso-square .pexeso-image {
+	background: linear-gradient(rgba(255,255,255,0.1) 50%, rgba(214,234,254,0.7) 100%);
+	background-color: #FAFAFA;
+}
+
+.pexeso-square .pexeso-image .pexeso-content {
+		 	background-size: 90%;
+}
+
+.pexeso-square .square-cover {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	z-index: 100;
+}
+
+.pexeso-square-container {
+	height: 150px;
+	width: 150px;
+	float: left;
+	position: relative;
+			perspective: 500px;
+}
+
+.pexeso-square-container-active {
+	z-index: 999;
+}
+
+@keyframes pulse {
+	0% { opacity: 0; }
+	50% { opacity: 1; }
+	100% { opacity: 0; }
+}
+
+@keyframes fadeIn {
+	0% { opacity: 0; }
+	100% { opacity: 1; }
+}
+
+@keyframes fadeOut {
+	0% { opacity: 1; }
+	100% { opacity: 0; }
+}
