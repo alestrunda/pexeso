@@ -6,7 +6,7 @@ Was available for purchase on Codecanyon.net few years age, now public under MIT
 
 [Online](http://pexeso.alestrunda.cz)
 
-![screen](https://github.com/alestrunda/pexeso/screens/pc.jpg)
+![screen](https://github.com/alestrunda/pexeso/raw/master/screens/pc.jpg)
 
 ## Scripts
 
