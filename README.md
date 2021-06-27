@@ -4,7 +4,7 @@ HTML5 game, using jQuery, single or multiplayer. For more info please view `docs
 
 Was available for purchase on Codecanyon.net some years ago, now public under MIT license.
 
-[Online](http://pexeso.alestrunda.cz)
+**[Online](http://pexeso.alestrunda.cz)**
 
 ![screen](https://github.com/alestrunda/pexeso/raw/master/screens/pc.jpg)
 
