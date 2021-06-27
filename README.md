@@ -6,6 +6,8 @@ Was available for purchase on Codecanyon.net some years ago, now public under MI
 
 **[Online](http://pexeso.alestrunda.cz)**
 
+## Screenshots
+
 ![screen](https://github.com/alestrunda/pexeso/raw/master/screens/pc.jpg)
 
 ## Scripts
