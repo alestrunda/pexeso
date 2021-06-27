@@ -1,8 +1,8 @@
-# Pexeso (concentration) game
+# Pexeso, or known also as a concentration game
 
-HTML5 game, using jQuery, single or multiplayer. For more info please view docs.html
+HTML5 game, using jQuery, single or multiplayer. For more info please view `docs.html`.
 
-Was available for purchase on Codecanyon.net few years age, now public under MIT license.
+Was available for purchase on Codecanyon.net some years ago, now public under MIT license.
 
 [Online](http://pexeso.alestrunda.cz)
 
